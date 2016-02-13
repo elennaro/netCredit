@@ -11,43 +11,48 @@ import java.time.temporal.ChronoUnit;
 @Entity
 public class User {
 
+    public interface ValidateOnCreate {}
+    public interface ValidateOnUpdate {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotEmpty
-    @NotNull
-    @Size(min = 2, max = 30)
+    @NotEmpty(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
+    @NotNull(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
+    @Size(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, min = 2, max = 30)
     private String username;
 
-    @NotEmpty
-    @NotNull
-    @Pattern(regexp = "^(5\\d{2}|2)\\d{6}$",
+    @NotEmpty(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
+    @NotNull(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
+    @Pattern(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, regexp = "^(5\\d{2}|2)\\d{6}$",
             message = "Phone must be in format: 5xxxxxxxx or 2xxxxxx")
     private String phoneNumber;
 
-    @NotNull
     @JsonIgnore
+    @NotNull(groups = {ValidateOnCreate.class})
     private LocalDate birthday;
 
-    @NotNull
-    @Min(0)
-    @Max(9007199254740991L)
+    @NotNull(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
+    @Min(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 0)
+    @Max(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 9007199254740991L)
     private Long monthlySalary;
 
-    @NotNull
-    @Min(0)
-    @Max(9007199254740991L)
+    @NotNull(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
+    @Min(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 0)
+    @Max(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 9007199254740991L)
     private Long currentRemainingLiabilities;
 
-    @NotEmpty
-    @NotNull
     @JsonIgnore
-    @Size(min = 4, max = 100)
+    @NotEmpty(groups = { ValidateOnCreate.class })
+    @NotNull(groups = { ValidateOnCreate.class })
+    @Size(groups = { ValidateOnCreate.class }, min = 4, max = 100)
     private String password;
 
     @Transient
     @JsonIgnore
+    @NotEmpty(groups = { ValidateOnCreate.class })
+    @NotNull(groups = { ValidateOnCreate.class })
     private String confirmPassword;
 
     //Constructors

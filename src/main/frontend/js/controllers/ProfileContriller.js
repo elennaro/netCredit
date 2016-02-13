@@ -15,7 +15,7 @@
 
         pc.saveUser = function () {
             // pc.user already updated!
-            return $http.post('/users/me', pc.user).error(function (err) {
+            return $http.put('/users/me', pc.user).error(function (err) {
                 if (err && err instanceof Object) {
                     // err like {"name": "Server-side error for this username!"}
                     Object.keys(err).forEach(function (k) {

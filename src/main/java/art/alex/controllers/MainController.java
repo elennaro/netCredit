@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @Controller
 public class MainController {
@@ -60,7 +60,7 @@ public class MainController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(
-            @Valid @ModelAttribute("user") User user,
+            @Validated(User.ValidateOnCreate.class) @ModelAttribute("user") User user,
             final BindingResult bindingResult,
             RedirectAttributes attr,
             HttpServletRequest request) {

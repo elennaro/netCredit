@@ -20,7 +20,7 @@ public class UserValidator implements Validator {
         String password = user.getPassword();
         String confirmPassword = user.getConfirmPassword();
 
-        if (confirmPassword == null || !password.equals(confirmPassword)) {
+        if (confirmPassword != null && !password.equals(confirmPassword)) {
             errors.rejectValue("confirmPassword", "user.confirmPassword", "Passwords do not match!");
         }
 
