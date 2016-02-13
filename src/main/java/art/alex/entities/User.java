@@ -26,8 +26,8 @@ public class User {
             message = "Phone must be in format: 5xxxxxxxx or 2xxxxxx")
     private String phoneNumber;
 
-    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate birthday;
 
     @NotNull
@@ -64,7 +64,7 @@ public class User {
         this.username = username;
     }
 
-    private LocalDate getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
