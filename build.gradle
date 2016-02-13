@@ -1,11 +1,6 @@
 group 'art.alex'
 version '0.0.1-SNAPSHOT'
 
-//noinspection GroovyUnusedAssignment
-sourceCompatibility = 1.8
-//noinspection GroovyUnusedAssignment
-targetCompatibility = 1.8
-
 buildscript {
     ext {
         springBootVersion = '1.3.2.RELEASE'
@@ -28,6 +23,11 @@ jar {
     baseName = 'netcredit_test'
     version = "${version}"
 }
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
+targetCompatibility = 1.8
 
 repositories {
     jcenter()
