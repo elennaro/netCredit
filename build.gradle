@@ -49,6 +49,13 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     runtime('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    //Webjars
+    compile("org.webjars:bootstrap:3.3.6")
+    compile("org.webjars:angular-ui-bootstrap:1.0.3")
+    compile("org.webjars:jquery:2.2.0")
+    //Dev
+    compile('org.springframework.boot:spring-boot-devtools')
+
 }
 
 

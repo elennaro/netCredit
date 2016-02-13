@@ -5,8 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 @Entity
 public class User {
@@ -15,7 +15,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String name;
+    @NotEmpty
+    @NotNull
+    @Size(min = 2, max = 30)
+    private String username;
 
     @NotEmpty
     @NotNull
@@ -25,7 +28,7 @@ public class User {
 
     @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull
-    private Date birthday;
+    private LocalDate birthday;
 
     @NotNull
     @Min(0)
@@ -45,20 +48,27 @@ public class User {
     @Transient
     private String confirmPassword;
 
+    //Constructors
+    protected User() {}
+
+    public User(String username) {
+        this.username = username;
+    }
+
     //Getters And setters
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Date getBirthday() {
+    private LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -113,7 +123,6 @@ public class User {
     //TODO: move to a king of decorator
     //Unpresented in model
     public long getAge(){
-        Date now = new Date();
-        return ChronoUnit.YEARS.between(this.getBirthday().toInstant(), now.toInstant());
+        return ChronoUnit.YEARS.between(this.getBirthday(), LocalDate.now());
     }
 }
