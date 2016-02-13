@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userLoaded;
     }
 
-    private Set<? extends GrantedAuthority> getDefaultAuthorities(){
+    public Set<? extends GrantedAuthority> getDefaultAuthorities(){
         Set authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return authorities;

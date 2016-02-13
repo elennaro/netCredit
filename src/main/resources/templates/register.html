@@ -12,37 +12,37 @@
             <div class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'has-error'">
                 <label th:for="${#ids.next('username')}">Name:
                     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span></label>
-                <input class="form-control" type="text" th:field="*{username}"/>
+                <input class="form-control" title="username" type="text" th:field="*{username}" />
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
                 <label th:for="${#ids.next('password')}">Password:
                     <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span></label>
-                <input class="form-control" type="password" th:field="*{password}"/>
+                <input class="form-control" title="password" type="password" th:field="*{password}"/>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'has-error'">
                 <label th:for="${#ids.next('confirmPassword')}">Confirm Password:
                     <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span></label>
-                <input class="form-control" type="password" th:field="*{confirmPassword}"/>
+                <input class="form-control" title="confirmPassword" type="password" th:field="*{confirmPassword}"/>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('phoneNumber')} ? 'has-error'">
                 <label th:for="${#ids.next('phoneNumber')}">Phone Number:
                     <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span></label>
-                <input class="form-control" type="text" th:field="*{phoneNumber}"/>
+                <input class="form-control" title="phoneNumber" type="text" th:field="*{phoneNumber}"/>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('birthday')} ? 'has-error'">
                 <label th:for="${#ids.next('birthday')}">Birthday:
                     <span th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span></label>
-                <input class="form-control" type="date" th:field="*{birthday}"/>
+                <input class="form-control" title="birthday" type="date" th:field="*{birthday}"/>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('monthlySalary')} ? 'has-error'">
                 <label th:for="${#ids.next('monthlySalary')}">Salary:
                     <span th:if="${#fields.hasErrors('monthlySalary')}" th:errors="*{monthlySalary}"></span></label>
-                <input class="form-control" type="number" th:field="*{monthlySalary}"/>
+                <input class="form-control" title="monthlySalary" type="number" th:field="*{monthlySalary}"/>
             </div>
             <div class="form-group" th:classappend="${#fields.hasErrors('currentRemainingLiabilities')} ? 'has-error'">
                 <label th:for="${#ids.next('currentRemainingLiabilities')}">Current Liabilities:
                     <span th:if="${#fields.hasErrors('currentRemainingLiabilities')}" th:errors="*{currentRemainingLiabilities}"></span></label>
-                <input class="form-control" type="number" th:field="*{currentRemainingLiabilities}"/>
+                <input class="form-control" title="currentRemainingLiabilities" type="number" th:field="*{currentRemainingLiabilities}"/>
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
