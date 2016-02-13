@@ -1,7 +1,7 @@
 package art.alex.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -27,25 +27,27 @@ public class User {
     private String phoneNumber;
 
     @NotNull
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonIgnore
     private LocalDate birthday;
 
     @NotNull
     @Min(0)
-    @Max(Long.MAX_VALUE)
+    @Max(9007199254740991L)
     private Long monthlySalary;
 
     @NotNull
     @Min(0)
-    @Max(Long.MAX_VALUE)
+    @Max(9007199254740991L)
     private Long currentRemainingLiabilities;
 
     @NotEmpty
     @NotNull
+    @JsonIgnore
     @Size(min = 4, max = 100)
     private String password;
 
     @Transient
+    @JsonIgnore
     private String confirmPassword;
 
     //Constructors

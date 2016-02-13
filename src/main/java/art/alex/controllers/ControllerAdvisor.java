@@ -23,7 +23,7 @@ public class ControllerAdvisor {
     private static final Logger logger = LoggerFactory.getLogger(ControllerAdvisor.class);
 
     private static Map<?, ?> generateFieldExceptionList(List<FieldError> errors) {
-        return errors.stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        return errors.stream().collect(Collectors.groupingBy(FieldError::getField, Collectors.mapping(FieldError::getDefaultMessage, Collectors.joining(", "))));
     }
 
     @ExceptionHandler(value = {BindException.class})

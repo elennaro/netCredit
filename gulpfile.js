@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     clean = require('gulp-clean'),
     concat = require('gulp-concat'),
+    order = require("gulp-order"),
     concatCss = require('gulp-concat-css'),
     less = require('gulp-less'),
     minifyCSS = require('gulp-minify-css');
@@ -11,7 +12,7 @@ var OPTS = {
     src: {
         less: 'src/main/frontend/less/*',
         templates: 'src/main/frontend/**/*.html',
-        js: 'src/main/frontend/**/*.js',
+        js: 'src/main/frontend/js/**/*.js',
         static_out: 'src/main/webapp/resources/'
     },
     libs: []
@@ -36,6 +37,17 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function () {
     return gulp.src(OPTS.src.js)
+        .pipe(order([
+            'interceptors/**/*.js',
+            'main.js',
+            'config/**/*.js',
+            'services/**/*.js',
+            'models/**/*.js',
+            'directives/**/*.js',
+            'controllers/**/*.js',
+            'run/**/*.js',
+            '**/*.js'
+        ]))
         .pipe(concat(OPTS.jsAppName))
         .pipe(gulp.dest(OPTS.src.static_out));
 });

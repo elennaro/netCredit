@@ -52,13 +52,17 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-validation')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
     runtime('com.h2database:h2')
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
     //Webjars
     compile("org.webjars:bootstrap:3.3.6")
     compile("org.webjars:angular-ui-bootstrap:1.0.3")
     compile("org.webjars:jquery:2.2.0")
     compile("org.webjars:angularjs:1.4.9")
+    compile("org.webjars:angular-xeditable:0.1.9")
     //Dev
     compile('org.springframework.boot:spring-boot-devtools')
 
