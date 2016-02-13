@@ -12,5 +12,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         vcr.addViewController("/").setViewName("home");
         vcr.addViewController("/home").setViewName("home");
         vcr.addViewController("/login").setViewName("login");
+        vcr.addViewController("/profile").setViewName("profile");
     }
 }

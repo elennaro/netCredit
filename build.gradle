@@ -10,6 +10,8 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("com.moowork.gradle:gradle-node-plugin:0.11")
+        classpath('com.moowork.gradle:gradle-gulp-plugin:0.11')
     }
 }
 
@@ -17,6 +19,9 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
+
+apply plugin: "com.moowork.node"
+apply plugin: 'com.moowork.gulp'
 
 //noinspection GroovyAssignabilityCheck
 jar {
@@ -53,6 +58,7 @@ dependencies {
     compile("org.webjars:bootstrap:3.3.6")
     compile("org.webjars:angular-ui-bootstrap:1.0.3")
     compile("org.webjars:jquery:2.2.0")
+    compile("org.webjars:angularjs:1.4.9")
     //Dev
     compile('org.springframework.boot:spring-boot-devtools')
 
@@ -66,6 +72,26 @@ eclipse {
         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
     }
 }
+
+node {
+    version = '4.3.0'
+    npmVersion = '3.5.1'
+    distBaseUrl = 'http://nodejs.org/dist'
+    download = true
+    workDir = file("${project.buildDir}/nodejs")
+    nodeModulesDir = file("${project.projectDir}")
+}
+
+//make sure node and gulp are installed before calling the build task in gulpfile.js
+init.dependsOn('installGulp')
+init.dependsOn('npmInstall')
+clean.dependsOn('installGulp')
+clean.dependsOn('npmInstall')
+clean.dependsOn('gulp_clean')
+
+//make sure gulp generates CSS for the build
+bootRun.dependsOn(gulp_build)
+build.dependsOn(gulp_build)
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.10'
