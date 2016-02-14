@@ -20,6 +20,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String avatar;
+
     @NotEmpty(groups = {ValidateOnCreate.class})
     @Size(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, min = 2, max = 30)
     private String username;
@@ -75,6 +77,14 @@ public class User {
     }
 
     //Getters And setters
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getUsername() {
         return username;
     }

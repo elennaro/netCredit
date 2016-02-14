@@ -15,7 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +44,7 @@ public class MainControllerTest {
                 .param("birthday", LocalDate.now().minusYears(19).format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .param("monthlySalary", "123")
                 .param("currentRemainingLiabilities", "12")
-                .contentType(APPLICATION_FORM_URLENCODED))
+                .contentType(MULTIPART_FORM_DATA))
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -58,7 +58,7 @@ public class MainControllerTest {
                 .param("birthday", LocalDate.now().minusYears(17).format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .param("monthlySalary", "-5")
                 .param("currentRemainingLiabilities", "-10")
-                .contentType(APPLICATION_FORM_URLENCODED))
+                .contentType(MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest());
     }
 }

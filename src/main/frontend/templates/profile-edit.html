@@ -1,34 +1,38 @@
 <div class="content">
     <form editable-form name="pc.editableForm" ng-controller="ProfileController as pc" onaftersave="pc.saveUser()">
-        <div>
+        <div class="form-group">
             <span class="title">Credit Limit: </span>
             <span>{{pc.user.creditLimit}}</span>
         </div>
-        <div>
+        <div class="form-group">
+            <span class="title">Avatar: </span>
+            <img width="100" ng-src="/images/{{pc.user.avatar}}" alt="{{pc.user.avatar}}" />
+        </div>
+        <div class="form-group">
             <span class="title">User name: </span>
             <!-- browsers do not support minlength yet -->
             <span e-name="username" editable-text="pc.user.username"
                   e-maxlength="30" e-required>{{ pc.user.username}}</span>
         </div>
-        <div>
+        <div class="form-group">
             <span class="title">Phone: </span>
             <span e-name="phoneNumber" editable-tel="pc.user.phoneNumber" e-title="(2/5xx)xxxxxx"
                   e-pattern="^(5\d{2}|2)\d{6}$"  e-required >{{pc.user.phoneNumber }}</span>
         </div>
-        <div>
+        <div class="form-group">
             <span class="title">Age: </span>
             <span>{{pc.user.age}}</span>
         </div>
-        <div>
+        <div class="form-group">
             <span class="title">Salary: </span>
             <span e-name="monthlySalary" editable-number="pc.user.monthlySalary"
                   e-min="0" e-max="9007199254740991" e-required>{{pc.user.monthlySalary }}</span></div>
-        <div>
+        <div class="form-group">
             <span class="title">Current Liabilities: </span>
             <span e-name="currentRemainingLiabilities" editable-number="pc.user.currentRemainingLiabilities"
                   e-min="0" e-max="9007199254740991" e-required>{{pc.user.currentRemainingLiabilities }}</span>
         </div>
-        <div class="buttons">
+        <div class="form-group buttons">
             <!-- button to show form -->
             <button type="button" class="btn btn-default" ng-click="pc.editableForm.$show()" ng-show="!pc.editableForm.$visible">
                 Edit
