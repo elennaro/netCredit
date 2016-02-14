@@ -5,13 +5,16 @@ import art.alex.repositories.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,7 +23,7 @@ import java.util.stream.Stream;
  * Deals correctly with authentication principal
  */
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements AdvancedUserDetailService {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
@@ -36,7 +39,20 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new UserRepositoryUserDetails(client);
     }
 
-    public static Collection<? extends GrantedAuthority> getDefaultAuthorities(){
+    public boolean autoLogin(User user, HttpServletRequest request) {
+        try {
+            // generate session if one doesn't exist
+            request.getSession();
+            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, getDefaultAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        } catch (Exception e) {
+            logger.error("Error loging registered user in", e);
+            return false;
+        }
+        return true;
+    }
+
+    private static Collection<? extends GrantedAuthority> getDefaultAuthorities(){
         return Stream.generate(() -> new SimpleGrantedAuthority("ROLE_USER")).limit(1).collect(Collectors.toSet());
     }
 

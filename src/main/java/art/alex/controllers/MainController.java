@@ -3,14 +3,11 @@ package art.alex.controllers;
 
 import art.alex.entities.User;
 import art.alex.repositories.UsersRepository;
-import art.alex.services.CustomUserDetailsService;
+import art.alex.services.AdvancedUserDetailService;
 import art.alex.validators.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -28,34 +25,23 @@ public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    @Autowired
-    UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+    private final UserValidator userValidator;
+    private final AdvancedUserDetailService userDetailService;
 
     @Autowired
-    protected UserValidator userValidator;
-
-    @Autowired
-    CustomUserDetailsService userDetailsService;
+    public MainController(UsersRepository usersRepository,
+                          UserValidator userValidator,
+                          AdvancedUserDetailService userDetailService) {
+        this.usersRepository = usersRepository;
+        this.userValidator = userValidator;
+        this.userDetailService = userDetailService;
+    }
 
     @InitBinder
     protected void initBinder(final WebDataBinder binder) {
         if (binder.getTarget() instanceof User)
             binder.addValidators(userValidator);
-    }
-
-    private boolean autoLogin(User user, HttpServletRequest request){
-        try{
-            // generate session if one doesn't exist
-            request.getSession();
-            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, CustomUserDetailsService.getDefaultAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-        catch (Exception e){
-            logger.error("Error loging registered user in", e);
-            return false;
-        }
-
-        return true;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -74,7 +60,7 @@ public class MainController {
 
         usersRepository.registerUser(user);
 
-        return this.autoLogin(user, request) ? "redirect:/profile" : "redirect:/login";
+        return userDetailService.autoLogin(user, request) ? "redirect:/profile" : "redirect:/login";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
