@@ -58,6 +58,9 @@ public class User {
     @NotNull(groups = { ValidateOnCreate.class })
     private String confirmPassword;
 
+    @Transient
+    private BigDecimal creditLimit;
+
     //Constructors
     protected User() {}
 
@@ -140,8 +143,14 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    //TODO: move to a king of decorator
-    //Unpresented in model
+    public BigDecimal getCreditLimit() {
+        return creditLimit;
+    }
+
+    public void setCreditLimit(BigDecimal creditLimit) {
+        this.creditLimit = creditLimit;
+    }
+
     public long getAge(){
         return ChronoUnit.YEARS.between(this.getBirthday(), LocalDate.now());
     }

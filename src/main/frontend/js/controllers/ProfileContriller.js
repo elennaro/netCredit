@@ -4,7 +4,7 @@
 
     function ProfileController($http) {
         var pc = this;
-        $http.get('/users/me')
+        $http.get('/api/users/me')
             .success(function (data) {
                 pc.user = data;
             })
@@ -15,7 +15,11 @@
 
         pc.saveUser = function () {
             // pc.user already updated!
-            return $http.put('/users/me', pc.user).error(function (err) {
+            return $http.put('/api/users/me', pc.user)
+                .success(function (data) {
+                    pc.user = data;
+                })
+                .error(function (err) {
                 if (err && err instanceof Object) {
                     // err like {"name": "Server-side error for this username!"}
                     Object.keys(err).forEach(function (k) {

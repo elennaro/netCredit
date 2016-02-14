@@ -1,6 +1,10 @@
 <div class="content">
     <form editable-form name="pc.editableForm" ng-controller="ProfileController as pc" onaftersave="pc.saveUser()">
         <div>
+            <span class="title">Credit Limit: </span>
+            <span>{{pc.user.creditLimit}}</span>
+        </div>
+        <div>
             <span class="title">User name: </span>
             <!-- browsers do not support minlength yet -->
             <span e-name="username" editable-text="pc.user.username"

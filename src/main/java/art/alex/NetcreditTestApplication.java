@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @ComponentScan("art.alex")
@@ -30,8 +31,8 @@ public class NetCreditTestApplication {
             alex.setConfirmPassword("1234");
             alex.setPhoneNumber("593555555");
             alex.setBirthday(LocalDate.of(1984, 10, 17));
-            alex.setCurrentRemainingLiabilities(0L);
-            alex.setMonthlySalary(5000L);
+            alex.setCurrentRemainingLiabilities(new BigDecimal(0));
+            alex.setMonthlySalary(new BigDecimal(5000));
             // save a user
             userRepo.registerUser(alex);
 

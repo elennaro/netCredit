@@ -2,6 +2,8 @@ package art.alex.controllers;
 
 import art.alex.entities.User;
 import art.alex.repositories.UsersRepository;
+import art.alex.services.CreditDataService;
+import art.alex.services.NetCreditGeorgiaUsersCreditDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,15 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/users")
 public class UsersController {
 
     @Autowired
     UsersRepository usersRepository;
 
+    @Autowired
+    NetCreditGeorgiaUsersCreditDataService netCreditGeorgiaUsersCreditLimitService;
+
+    @Autowired
+    CreditDataService creditDataService;
+
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     public @ResponseBody User getCurrentUser(@AuthenticationPrincipal User activeUser) {
-        return usersRepository.findById(activeUser.getId());
+        return creditDataService.setCreditLimit(usersRepository.findById(activeUser.getId()));
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.PUT)
@@ -30,6 +38,6 @@ public class UsersController {
         correspondingUser.setMonthlySalary(user.getMonthlySalary());
         correspondingUser.setCurrentRemainingLiabilities(user.getCurrentRemainingLiabilities());
 
-        return usersRepository.save(correspondingUser);
+        return creditDataService.setCreditLimit(usersRepository.save(correspondingUser));
     }
 }
