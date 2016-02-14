@@ -31,11 +31,16 @@ public class UsersController {
     @RequestMapping(value = "/me", method = RequestMethod.PUT)
     public @ResponseBody User saveCurrentUser(@Validated(User.ValidateOnUpdate.class) @RequestBody User user, @AuthenticationPrincipal User activeUser) {
         //Nobody is going to save data to another user record. Not on my shift.
-        activeUser.setPhoneNumber(user.getPhoneNumber());
-        activeUser.setUsername(user.getUsername());
-        activeUser.setMonthlySalary(user.getMonthlySalary());
-        activeUser.setCurrentRemainingLiabilities(user.getCurrentRemainingLiabilities());
+        User correspondingUser = usersRepository.findById(activeUser.getId());
+        if (user.getPhoneNumber() != null)
+            correspondingUser.setPhoneNumber(user.getPhoneNumber());
+        if (user.getUsername() != null)
+            correspondingUser.setUsername(user.getUsername());
+        if (user.getMonthlySalary() != null)
+            correspondingUser.setMonthlySalary(user.getMonthlySalary());
+        if (user.getCurrentRemainingLiabilities() != null)
+            correspondingUser.setCurrentRemainingLiabilities(user.getCurrentRemainingLiabilities());
 
-        return creditDataService.setCreditLimit(usersRepository.save(activeUser));
+        return creditDataService.setCreditLimit(usersRepository.save(correspondingUser));
     }
 }

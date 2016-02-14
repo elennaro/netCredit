@@ -57,6 +57,8 @@ dependencies {
     runtime('com.h2database:h2')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+    testCompile('com.jayway.jsonpath:json-path')
     //Webjars
     compile("org.webjars:bootstrap:3.3.6")
     compile("org.webjars:angular-ui-bootstrap:1.0.3")
