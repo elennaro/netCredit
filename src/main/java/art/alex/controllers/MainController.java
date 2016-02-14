@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 @Controller
 public class MainController {
@@ -49,12 +52,14 @@ public class MainController {
             @Validated(User.ValidateOnCreate.class) @ModelAttribute("user") User user,
             final BindingResult bindingResult,
             RedirectAttributes attr,
-            HttpServletRequest request) {
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
         if (bindingResult.hasErrors()) {
             logger.warn("Validation exception.", bindingResult.getAllErrors());
             attr.addFlashAttribute("bindingResult", bindingResult);
             attr.addFlashAttribute("user", user);
+            response.setStatus(SC_BAD_REQUEST);
             return "register";
         }
 

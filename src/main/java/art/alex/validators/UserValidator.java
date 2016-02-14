@@ -8,6 +8,7 @@ import org.springframework.validation.Validator;
 
 @Component
 //I know I do not have messages
+//And I know I should reverse order of validators - but don't have time - so forgive me null checks please
 public class UserValidator implements Validator {
 
     @Override public boolean supports(Class<?> clazz) {
@@ -24,7 +25,7 @@ public class UserValidator implements Validator {
             errors.rejectValue("confirmPassword", "user.confirmPassword", "Passwords do not match!");
         }
 
-        if(user.getAge() < 18)
+        if(user.getBirthday() == null || user.getAge() < 18)
             errors.rejectValue("birthday", "user.birthday", "Bye bye, kiddo, you should be 18!");
     }
 }

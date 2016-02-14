@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+/**
+ * Realisation of credit limit calculations for Georgian branch
+ */
 @Service
 public class NetCreditGeorgiaUsersCreditDataService implements CreditDataService {
 
