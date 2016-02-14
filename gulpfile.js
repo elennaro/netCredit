@@ -10,7 +10,7 @@ var OPTS = {
     jsAppName: 'app.js',
     cssAppName: 'app.css',
     src: {
-        less: 'src/main/frontend/less/*',
+        less: 'src/main/frontend/less/',
         templates: 'src/main/frontend/**/*.html',
         js: 'src/main/frontend/js/**/*.js',
         static_out: 'src/main/webapp/resources/'
@@ -28,7 +28,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('styles', function () {
-    return gulp.src(OPTS.src.less)
+    return gulp.src(OPTS.src.less + "/*")
         .pipe(less())
         .pipe(concatCss(OPTS.cssAppName))
         .pipe(minifyCSS())
@@ -59,7 +59,7 @@ gulp.task('templates', function () {
 
 gulp.task('watch', ['build'], function () {
     gulp.watch(OPTS.src.js, ['scripts']);
-    gulp.watch(OPTS.src.less, ['styles']);
+    gulp.watch(OPTS.src.less + '/**', ['styles']);
     gulp.watch(OPTS.src.templates, ['templates']);
 });
 
