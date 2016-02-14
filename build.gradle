@@ -70,7 +70,6 @@ dependencies {
 
 }
 
-
 eclipse {
     //noinspection GroovyAssignabilityCheck
     classpath {

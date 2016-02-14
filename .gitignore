@@ -107,6 +107,7 @@ nb-configuration.xml
 .nb-gradle/
 
 #Other
+/src/main/webapp/images
 /src/main/resources/webapp/resources
 /node_modules
 .log
