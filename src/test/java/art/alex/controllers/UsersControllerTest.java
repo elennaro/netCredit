@@ -99,4 +99,19 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$.phoneNumber").value("593555556"))
                 .andExpect(jsonPath("$.age").value(19));
     }
+
+    @Test
+    public void saveCurrentUserValidation() throws Exception {
+        mockMvc.perform(put("/api/users/me")
+                .with(user(userDetailsService.loadUserByUsername("joe")))
+                .with(csrf())
+                .content("{\"username\":\"j\",\"phoneNumber\":\"79355555\",\"monthlySalary\":-1,\"currentRemainingLiabilities\":-1}")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.username").value("size must be between 2 and 30"))
+                .andExpect(jsonPath("$.phoneNumber").value("Phone must be in format: 5xxxxxxxx or 2xxxxxx"))
+                .andExpect(jsonPath("$.monthlySalary").value("must be greater than or equal to 0"))
+                .andExpect(jsonPath("$.currentRemainingLiabilities").value("must be greater than or equal to 0"));
+    }
 }
