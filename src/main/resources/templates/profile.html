@@ -5,20 +5,23 @@
     <meta charset="utf-8" />
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <base href="/profile/" />
     <title>Profile Edit</title>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/webjars/angular-xeditable/0.1.9/css/xeditable.css"/>
+    <!--suppress HtmlUnknownTarget -->
     <link rel="stylesheet" href="/resources/app.css"/>
 </head>
 <body>
-<div th:replace="header :: replace"></div>
-<div ng-include="'/resources/templates/profile-edit.html'" ng-cloak=""></div>
+<div ng-include="'/resources/templates/nav.html'" ng-cloak=""></div>
+<div ui-view=""></div>
 <!--Scripts-->
 <script type="text/javascript" src="/webjars/angularjs/1.4.9/angular.min.js"></script>
-<script type="text/javascript" src="/webjars/angularjs/1.4.9/angular-cookies.min.js"></script>
+<script type="text/javascript" src="/webjars/angular-ui-router/0.2.17/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="/webjars/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.min.js"></script>
 <script type="text/javascript" src="/webjars/angular-ui-bootstrap/1.0.3/ui-bootstrap.min.js"></script>
 <script type="text/javascript" src="/webjars/angular-xeditable/0.1.9/js/xeditable.min.js"></script>
+<!--suppress HtmlUnknownTarget -->
 <script type="text/javascript" src="/resources/app.js"></script>
 <!--Scripts-->
 </body>
