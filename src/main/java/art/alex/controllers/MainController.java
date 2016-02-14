@@ -47,7 +47,7 @@ public class MainController {
         try{
             // generate session if one doesn't exist
             request.getSession();
-            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, userDetailsService.getDefaultAuthorities());
+            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, CustomUserDetailsService.getDefaultAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         catch (Exception e){

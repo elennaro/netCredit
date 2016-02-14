@@ -12,9 +12,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+/**
+ * Deals correctly with authentication principal
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -25,19 +29,41 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails userLoaded;
         User client = usersRepository.findByUsername(username);
-        userLoaded = new org.springframework.security.core.userdetails.User(
-                client.getUsername(),
-                client.getPassword(),
-                this.getDefaultAuthorities()
-        );
-        return userLoaded;
+        if(client == null) {
+            throw new UsernameNotFoundException("Could not find user " + username);
+        }
+        return new UserRepositoryUserDetails(client);
     }
 
-    public Set<? extends GrantedAuthority> getDefaultAuthorities(){
-        Set authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return authorities;
+    public static Collection<? extends GrantedAuthority> getDefaultAuthorities(){
+        return Stream.generate(() -> new SimpleGrantedAuthority("ROLE_USER")).limit(1).collect(Collectors.toSet());
+    }
+
+    private final static class UserRepositoryUserDetails extends User implements UserDetails {
+
+        @Override public Collection<? extends GrantedAuthority> getAuthorities() {
+            return CustomUserDetailsService.getDefaultAuthorities();
+        }
+
+        private UserRepositoryUserDetails(User user) {
+            super(user);
+        }
+
+        @Override public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        @Override public boolean isAccountNonLocked() {
+            return true;
+        }
+
+        @Override public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+        @Override public boolean isEnabled() {
+            return true;
+        }
     }
 }

@@ -2,9 +2,11 @@ package art.alex.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -30,18 +32,19 @@ public class User {
     private String phoneNumber;
 
     @JsonIgnore
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @NotNull(groups = {ValidateOnCreate.class})
     private LocalDate birthday;
 
     @NotNull(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
     @Min(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 0)
     @Max(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 9007199254740991L)
-    private Long monthlySalary;
+    private BigDecimal monthlySalary;
 
     @NotNull(groups = {ValidateOnCreate.class, ValidateOnUpdate.class})
     @Min(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 0)
     @Max(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 9007199254740991L)
-    private Long currentRemainingLiabilities;
+    private BigDecimal currentRemainingLiabilities;
 
     @JsonIgnore
     @NotEmpty(groups = { ValidateOnCreate.class })
@@ -60,6 +63,16 @@ public class User {
 
     public User(String username) {
         this.username = username;
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.birthday = user.getBirthday();
+        this.currentRemainingLiabilities = user.getCurrentRemainingLiabilities();
+        this.monthlySalary = user.getMonthlySalary();
+        this.password = user.getPassword();
+        this.phoneNumber = user.getPhoneNumber();
+        this.username = user.getUsername();
     }
 
     //Getters And setters
@@ -87,11 +100,11 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
-    public Long getCurrentRemainingLiabilities() {
+    public BigDecimal getCurrentRemainingLiabilities() {
         return currentRemainingLiabilities;
     }
 
-    public void setCurrentRemainingLiabilities(Long currentRemainingLiabilities) {
+    public void setCurrentRemainingLiabilities(BigDecimal currentRemainingLiabilities) {
         this.currentRemainingLiabilities = currentRemainingLiabilities;
     }
 
@@ -103,11 +116,11 @@ public class User {
         this.id = id;
     }
 
-    public Long getMonthlySalary() {
+    public BigDecimal getMonthlySalary() {
         return monthlySalary;
     }
 
-    public void setMonthlySalary(Long monthlySalary) {
+    public void setMonthlySalary(BigDecimal monthlySalary) {
         this.monthlySalary = monthlySalary;
     }
 
