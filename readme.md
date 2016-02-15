@@ -13,3 +13,5 @@ A sample Spring Boot, JPA, Gradle, Gulp, Angular, Bootstrap application
 1. open [http://localhost:8080](http://localhost:8080)
 2. You can either [register](http://localhost:8080/register) or [login](http://localhost:8080/login)
 3. Default user for login is: *alex* with password *1234*
+
+2016-02-15:06:10
