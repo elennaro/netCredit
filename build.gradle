@@ -52,7 +52,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-validation')
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+    compile('de.malkusch.validation:validation:0.3.0')
 
     runtime('com.h2database:h2')
 

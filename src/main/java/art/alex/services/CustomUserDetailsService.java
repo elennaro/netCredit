@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,10 +31,13 @@ public class CustomUserDetailsService implements AdvancedUserDetailService {
     @Autowired
     UsersRepository usersRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User client = usersRepository.findByUsername(username);
-        if(client == null) {
+        if (client == null) {
             throw new UsernameNotFoundException("Could not find user " + username);
         }
         return new UserRepositoryUserDetails(client);
@@ -52,7 +56,18 @@ public class CustomUserDetailsService implements AdvancedUserDetailService {
         return true;
     }
 
-    private static Collection<? extends GrantedAuthority> getDefaultAuthorities(){
+    /**
+     * Check password is for a definite user
+     *
+     * @param password password to compare
+     * @return true if match
+     */
+    public boolean checkPassword(String password) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return !(principal == null || !(principal instanceof User)) && passwordEncoder.matches(password, ((User) principal).getPassword());
+    }
+
+    private static Collection<? extends GrantedAuthority> getDefaultAuthorities() {
         return Stream.generate(() -> new SimpleGrantedAuthority("ROLE_USER")).limit(1).collect(Collectors.toSet());
     }
 

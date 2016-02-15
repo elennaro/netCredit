@@ -7,8 +7,12 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class NetCreditGeorgiaUsersCreditDataServiceTest {
+
+    private static final Date DEFAULT_BIRTHDAY = Date.from(LocalDate.now().minusYears(20).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
     private User user;
     private CreditDataService service;
@@ -16,7 +20,7 @@ public class NetCreditGeorgiaUsersCreditDataServiceTest {
     @Before
     public void setUp() {
         user = new User("alex");
-        user.setBirthday(LocalDate.now().minusYears(20));
+        user.setBirthday(DEFAULT_BIRTHDAY);
         user.setCurrentRemainingLiabilities(new BigDecimal(5));
         user.setMonthlySalary(new BigDecimal(100));
 

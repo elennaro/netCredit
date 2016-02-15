@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @ComponentScan("art.alex")
 @SpringBootApplication
@@ -30,7 +32,7 @@ public class NetCreditTestApplication {
             alex.setPassword("1234");
             alex.setConfirmPassword("1234");
             alex.setPhoneNumber("593555555");
-            alex.setBirthday(LocalDate.of(1984, 10, 17));
+            alex.setBirthday(Date.from(LocalDate.of(1984,10, 17).atStartOfDay(ZoneId.systemDefault()).toInstant()));
             alex.setCurrentRemainingLiabilities(new BigDecimal(0));
             alex.setMonthlySalary(new BigDecimal(5000));
             // save a user

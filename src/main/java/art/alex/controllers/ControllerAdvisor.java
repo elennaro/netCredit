@@ -22,7 +22,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class ControllerAdvisor {
     private static final Logger logger = LoggerFactory.getLogger(ControllerAdvisor.class);
 
-    private static Map<?, ?> generateFieldExceptionList(List<FieldError> errors) {
+    private static Map<?, ?> generateFieldExceptions(List<FieldError> errors) {
         return errors.stream().collect(Collectors.groupingBy(FieldError::getField, Collectors.mapping(FieldError::getDefaultMessage, Collectors.joining(", "))));
     }
 
@@ -31,7 +31,7 @@ public class ControllerAdvisor {
     public @ResponseBody ResponseEntity<Map<?, ?>> handleBindingExceptions(BindException ex) {
         logger.warn("Validation exception.", ex);
 
-        return new ResponseEntity<>(generateFieldExceptionList(ex.getBindingResult().getFieldErrors()), BAD_REQUEST);
+        return new ResponseEntity<>(generateFieldExceptions(ex.getBindingResult().getFieldErrors()), BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
@@ -39,6 +39,6 @@ public class ControllerAdvisor {
     public @ResponseBody ResponseEntity<Map<?, ?>> handleException(MethodArgumentNotValidException ex) {
         logger.warn("Validation exception.", ex);
 
-        return new ResponseEntity<>(generateFieldExceptionList(ex.getBindingResult().getFieldErrors()), BAD_REQUEST);
+        return new ResponseEntity<>(generateFieldExceptions(ex.getBindingResult().getFieldErrors()), BAD_REQUEST);
     }
 }

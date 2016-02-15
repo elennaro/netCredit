@@ -1,6 +1,10 @@
 package art.alex.entities;
 
+import art.alex.validators.CorrectPassword;
+import art.alex.validators.PasswordMatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.malkusch.validation.constraints.age.Age;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,13 +12,19 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 @Entity
+@PasswordMatch(password = "password", confirmPassword = "confirmPassword",
+        message = "Passwords do not match!",
+        groups = {User.ValidateOnCreate.class, User.ValidateOnUpdatePassword.class})
 public class User {
 
     public interface ValidateOnCreate {}
     public interface ValidateOnUpdate {}
+    public interface ValidateOnUpdatePassword {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,9 +42,10 @@ public class User {
     private String phoneNumber;
 
     @JsonIgnore
+    @Age(value = 18, message = "Bye bye, kiddo, you should be 18!", groups = {User.ValidateOnCreate.class})
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @NotNull(groups = {ValidateOnCreate.class})
-    private LocalDate birthday;
+    private Date birthday;
 
     @NotNull(groups = {ValidateOnCreate.class})
     @Min(groups = {ValidateOnCreate.class, ValidateOnUpdate.class}, value = 0)
@@ -47,13 +58,19 @@ public class User {
     private BigDecimal currentRemainingLiabilities;
 
     @JsonIgnore
-    @NotEmpty(groups = { ValidateOnCreate.class })
-    @Size(groups = { ValidateOnCreate.class }, min = 4, max = 100)
+    @NotEmpty(groups = { ValidateOnCreate.class, ValidateOnUpdatePassword.class })
+    @Size(groups = { ValidateOnCreate.class, ValidateOnUpdatePassword.class }, min = 4, max = 100)
     private String password;
 
-    @Transient
     @JsonIgnore
-    @NotEmpty(groups = { ValidateOnCreate.class })
+    @Transient
+    @NotEmpty(groups = { ValidateOnUpdatePassword.class })
+    @CorrectPassword(message = "Wrong password!", groups = { User.ValidateOnUpdatePassword.class })
+    private String oldPassword;
+
+    @JsonIgnore
+    @Transient
+    @NotEmpty(groups = { ValidateOnCreate.class, ValidateOnUpdatePassword.class })
     private String confirmPassword;
 
     @Transient
@@ -93,20 +110,12 @@ public class User {
         this.username = username;
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public BigDecimal getCurrentRemainingLiabilities() {
@@ -133,12 +142,34 @@ public class User {
         this.monthlySalary = monthlySalary;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @JsonIgnore
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    @JsonProperty
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    @JsonIgnore
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    @JsonProperty
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public String getPhoneNumber() {
@@ -158,6 +189,7 @@ public class User {
     }
 
     public long getAge(){
-        return ChronoUnit.YEARS.between(this.getBirthday(), LocalDate.now());
+        return ChronoUnit.YEARS.between(this.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now());
     }
+
 }

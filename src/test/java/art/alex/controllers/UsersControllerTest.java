@@ -17,7 +17,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -34,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = NetCreditTestApplication.class)
 public class UsersControllerTest {
 
-    private static final LocalDate DEFAULT_BIRTHSDAY = LocalDate.now().minusYears(19);
+    private static final Date DEFAULT_BIRTHDAY = Date.from(LocalDate.now().minusYears(19).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
     private MockMvc mockMvc;
 
@@ -57,7 +59,7 @@ public class UsersControllerTest {
         joe.setPassword("1234");
         joe.setConfirmPassword("1234");
         joe.setPhoneNumber("593555555");
-        joe.setBirthday(DEFAULT_BIRTHSDAY);
+        joe.setBirthday(DEFAULT_BIRTHDAY);
         joe.setCurrentRemainingLiabilities(new BigDecimal(0));
         joe.setMonthlySalary(new BigDecimal(5000));
         // save a joe
@@ -92,7 +94,7 @@ public class UsersControllerTest {
         mockMvc.perform(put("/api/users/me")
                 .with(user(userDetailsService.loadUserByUsername("joe")))
                 .with(csrf())
-                .content("{\"phoneNumber\":\"593555556\",\"birthday\":\""+LocalDate.now().minusYears(45).format(DateTimeFormatter.ISO_LOCAL_DATE)+"\"}")
+                .content("{\"phoneNumber\":\"593555556\",\"birthday\":\"" + LocalDate.now().minusYears(45).format(DateTimeFormatter.ISO_LOCAL_DATE) + "\"}")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -114,4 +116,54 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$.monthlySalary").value("must be greater than or equal to 0"))
                 .andExpect(jsonPath("$.currentRemainingLiabilities").value("must be greater than or equal to 0"));
     }
+
+    @Test
+    public void updatePassword() throws Exception {
+        mockMvc.perform(put("/api/users/me/updatePassword")
+                .with(user(userDetailsService.loadUserByUsername("joe")))
+                .with(csrf())
+                .content("{\"oldPassword\":\"1234\",\"password\":\"12345\",\"confirmPassword\":\"12345\"}")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updatePasswordValidateOldOne() throws Exception {
+        mockMvc.perform(put("/api/users/me/updatePassword")
+                .with(user(userDetailsService.loadUserByUsername("joe")))
+                .with(csrf())
+                .content("{\"oldPassword\":\"12345\",\"password\":\"123\",\"confirmPassword\":\"12345\"}")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.oldPassword").value("Wrong password!"))
+                .andExpect(jsonPath("$.password").value("size must be between 4 and 100"))
+                .andExpect(jsonPath("$.password").value("size must be between 4 and 100"));
+    }
+
+    @Test
+    public void updatePasswordValidatePasswords() throws Exception {
+        mockMvc.perform(put("/api/users/me/updatePassword")
+                .with(user(userDetailsService.loadUserByUsername("joe")))
+                .with(csrf())
+                .content("{\"oldPassword\":\"1234\",\"password\":\"12\",\"confirmPassword\":\"12345\"}")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.confirmPassword").value("Passwords do not match!"));
+    }
+
+    @Test
+    public void updatePasswordValidateConfirmPasswords() throws Exception {
+        mockMvc.perform(put("/api/users/me/updatePassword")
+                .with(user(userDetailsService.loadUserByUsername("joe")))
+                .with(csrf())
+                .content("{\"oldPassword\":\"1234\",\"password\":\"1234\",\"confirmPassword\":\"12345\"}")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.confirmPassword").value("Passwords do not match!"));
+    }
+
 }

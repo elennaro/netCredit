@@ -5,15 +5,16 @@ import art.alex.entities.User;
 import art.alex.repositories.UsersRepository;
 import art.alex.services.AdvancedUserDetailService;
 import art.alex.services.ImageUploadService;
-import art.alex.validators.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,25 +28,16 @@ public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     private final UsersRepository usersRepository;
-    private final UserValidator userValidator;
     private final AdvancedUserDetailService userDetailService;
     private final ImageUploadService imageUploadService;
 
     @Autowired
     public MainController(UsersRepository usersRepository,
-                          UserValidator userValidator,
                           AdvancedUserDetailService userDetailService,
                           ImageUploadService imageUploadService) {
         this.usersRepository = usersRepository;
-        this.userValidator = userValidator;
         this.userDetailService = userDetailService;
         this.imageUploadService = imageUploadService;
-    }
-
-    @InitBinder
-    protected void initBinder(final WebDataBinder binder) {
-        if (binder.getTarget() instanceof User)
-            binder.addValidators(userValidator);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
