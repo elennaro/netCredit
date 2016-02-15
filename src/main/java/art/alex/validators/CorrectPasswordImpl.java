@@ -1,6 +1,6 @@
 package art.alex.validators;
 
-import art.alex.services.CustomUserDetailsService;
+import art.alex.services.AdvancedUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
@@ -10,7 +10,7 @@ class CorrectPasswordImpl implements ConstraintValidator<CorrectPassword, String
 
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    AdvancedUserDetailService customUserDetailsService;
 
     @Override
     public void initialize(CorrectPassword cp) { }

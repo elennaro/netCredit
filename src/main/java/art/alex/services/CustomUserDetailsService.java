@@ -56,12 +56,6 @@ public class CustomUserDetailsService implements AdvancedUserDetailService {
         return true;
     }
 
-    /**
-     * Check password is for a definite user
-     *
-     * @param password password to compare
-     * @return true if match
-     */
     public boolean checkPassword(String password) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return !(principal == null || !(principal instanceof User)) && passwordEncoder.matches(password, ((User) principal).getPassword());

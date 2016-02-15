@@ -29,7 +29,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(value = {BindException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public @ResponseBody ResponseEntity<Map<?, ?>> handleBindingExceptions(BindException ex) {
-        logger.warn("Validation exception.", ex);
+        logger.debug("Validation exception.", ex);
 
         return new ResponseEntity<>(generateFieldExceptions(ex.getBindingResult().getFieldErrors()), BAD_REQUEST);
     }
@@ -37,7 +37,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public @ResponseBody ResponseEntity<Map<?, ?>> handleException(MethodArgumentNotValidException ex) {
-        logger.warn("Validation exception.", ex);
+        logger.debug("Validation exception.", ex);
 
         return new ResponseEntity<>(generateFieldExceptions(ex.getBindingResult().getFieldErrors()), BAD_REQUEST);
     }

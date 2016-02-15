@@ -16,4 +16,13 @@ public interface AdvancedUserDetailService extends UserDetailsService {
      */
     boolean autoLogin(User user, HttpServletRequest request);
 
+
+    /**
+     * Check if password matches for a principal user
+     *
+     * @param password password to compare
+     * @return true if match
+     */
+    boolean checkPassword(String password);
+
 }

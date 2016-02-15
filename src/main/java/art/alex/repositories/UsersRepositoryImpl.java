@@ -4,6 +4,7 @@ import art.alex.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@SuppressWarnings("unused")
 public class UsersRepositoryImpl implements UsersRepositoryCustom {
 
     @Autowired
