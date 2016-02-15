@@ -18,4 +18,8 @@ public class UsersRepositoryImpl implements UsersRepositoryCustom {
         user.setPassword(encodedPassword);
         return usersRepository.save(user);
     }
+
+    @Override public User updatePassword(User user) {
+        return registerUser(user);
+    }
 }

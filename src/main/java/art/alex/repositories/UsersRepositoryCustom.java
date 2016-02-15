@@ -13,4 +13,12 @@ public interface UsersRepositoryCustom {
      */
     User registerUser(User user);
 
+    /**
+     * Saves user with new encrypted password
+     *
+     * @param user user to save (Must contain unencrypted password)
+     * @return registered user
+     */
+    User updatePassword(User user);
+
 }

@@ -48,7 +48,7 @@ public class UsersController {
         if (user.getPassword() != null)
             correspondingUser.setPassword(user.getPassword());
 
-        return creditDataService.setCreditLimit(usersRepository.save(correspondingUser));
+        return creditDataService.setCreditLimit(usersRepository.updatePassword(correspondingUser));
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.PUT)
