@@ -92,8 +92,8 @@ node {
 //make sure node and gulp are installed before calling the build task in gulpfile.js
 init.dependsOn('installGulp')
 init.dependsOn('npmInstall')
-clean.dependsOn('installGulp')
 clean.dependsOn('npmInstall')
+clean.dependsOn('installGulp')
 clean.dependsOn('gulp_clean')
 
 //make sure gulp generates CSS for the build

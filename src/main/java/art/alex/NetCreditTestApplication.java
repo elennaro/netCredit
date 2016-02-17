@@ -8,14 +8,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-@ComponentScan("art.alex")
 @SpringBootApplication
 public class NetCreditTestApplication {
 
@@ -24,6 +24,11 @@ public class NetCreditTestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(NetCreditTestApplication.class, args);
 	}
+
+    @Bean(name = "passwordEncoder")
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public CommandLineRunner demo(UsersRepository userRepo) { //TODO: remove this
